@@ -1,0 +1,18 @@
+plugin.tx_notifications {
+    view {
+        templateRootPaths.0 = EXT:notifications/Resources/Private/Templates/
+        partialRootPaths.0 = EXT:notifications/Resources/Private/Partials/
+        layoutRootPaths.0 = EXT:notifications/Resources/Private/Layouts/
+    }
+    settings {
+      changelog {
+        email {
+          sender = info@domain.com
+          template = Changelog/Notification
+          subject = Änderungsübersicht auf  Website
+        }
+      }
+    }
+}
+
+module.tx_notifications < plugin.tx_notifications

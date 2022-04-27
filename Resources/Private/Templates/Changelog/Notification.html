@@ -1,0 +1,53 @@
+<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers" xmlns:in="http://typo3.org/ns/PG/Notifications/ViewHelpers" data-namespace-typo3-fluid="true">
+<f:layout name="Email" />
+
+<f:section name="Content">
+<h1>Inhaltsänderungen vom <f:if condition="{startDate -> f:format.date(format:'ymd')} == {endDate -> f:format.date(format:'ymd')}">
+	<f:then><f:format.date date="{startDate}" format="d.m.Y" /></f:then>
+	<f:else><f:format.date date="{startDate}" format="d.m." /> bis <f:format.date date="{endDate}" format="d.m.Y" /></f:else>
+</f:if></h1>
+<f:if condition="{changes}">
+	<f:then>
+		<f:for each="{changes}" as="changesInTable" key="tableName">
+			<hr style="margin:3em 0;" />
+			<h2>
+				Änderungen an: <span style="display: none;"><strong>{in:tca.tableName(tablename:tableName)}</strong></span>
+				<f:if condition="{tableName} == 'pages'">
+					<f:then>
+						"<strong>Seiteneigenschaften</strong>"
+					</f:then>
+					<f:else>
+						"<strong>Seiteninhalt</strong>"
+					</f:else>
+				</f:if>
+			</h2>
+			<f:for each="{changesInTable}" as="changedRecords" key="pageId">
+				<f:if condition="{pageId} != {page.uid}">
+					<f:variable name="page" value="{pages.{pageId}}" />
+					<span style="font-size: 14px; font-weight: bold;">Auf Seite <strong>{page.title}</strong> (<code>#page:{page.uid}</code>)</span>
+				</f:if>
+				<div style="padding-bottom:65px;">
+					<f:for each="{changedRecords}" as="record">
+						<in:diff.merge recordHistory="{record}" as="changeset">
+							<f:if condition="{changeset.newRecord}">
+								<h4 style="margin-top:3em;">Datensatz: <f:if condition="{changeset.title}"><strong>{changeset.title}</strong></f:if> <span style="display: none;">(<code>#{tableName}:{changeset.recuid}</code>)</span></h4>
+								<in:format.diff new="{changeset.newRecord}" old="{changeset.oldRecord}" table="{tableName}" as="fields">
+									<table bgcolor="#efefef" width="100%" border="0">
+										<f:for each="{fields}" as="field">
+											<tr><th align="left">{field.title}</th><td><f:format.html>{field.result}</f:format.html></td></tr>
+										</f:for>
+									</table>
+								</in:format.diff>
+							</f:if>
+						</in:diff.merge>
+					</f:for>
+				</div>
+			</f:for>
+		</f:for>
+	</f:then>
+	<f:else>
+		<p>Keine Änderungen</p>
+	</f:else>
+</f:if>
+</f:section>
+</html>

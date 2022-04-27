@@ -1,0 +1,24 @@
+{
+    "name": "pg/notifications",
+    "type": "typo3-cms-extension",
+    "description": "",
+    "authors": [
+        {
+            "name": "Philippe Greban",
+            "role": "Developer"
+        }
+    ],
+    "version": "2.0.0",
+    "require": {
+        "typo3/cms-core": "9.5.0-10.5.99"
+    },
+    "autoload": {
+        "psr-4": {
+            "PG\\Notifications\\": "Classes"
+        }
+    },
+    "replace": {
+        "notifications": "self.version",
+        "typo3-ter/notifications": "self.version"
+    }
+}
